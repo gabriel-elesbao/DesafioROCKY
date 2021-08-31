@@ -4,24 +4,27 @@ const data = require('./broken-database.json')
 
 
 
-
 function corrigeFrase(frase){
-     const formatada = frase.replace(/[æ]/g,'a')
-        .replace(/[¢]/g,'c')
-        .replace(/[ø]/g,'o')
-        .replace(/[ß]/g,'b')
+    const formatada = frase.replace(/[æ]/g,'a')
+       .replace(/[¢]/g,'c')
+       .replace(/[ø]/g,'o')
+       .replace(/[ß]/g,'b')
 
-    return formatada
+   return formatada
 }
 
 
 const nameCorrigido = data
-    .map(item=> item.name)
-    .map(item=> corrigeFrase(item))
+   .map(item=> item.name)
+   .map(item=> corrigeFrase(item))
 
 const produtosCorrigidos = data.map(item=>{
-    return item.name=nameCorrigido.shift()
+   return item.name=nameCorrigido.shift()
 })
+
+
+
+
 
 console.log(data)
 
