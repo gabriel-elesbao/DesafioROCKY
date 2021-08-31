@@ -2,7 +2,7 @@
     
 const data = require('./broken-database.json')
 
-
+//-----------------Corrige name--------------------
 
 function corrigeFrase(frase){
     const formatada = frase.replace(/[æ]/g,'a')
@@ -23,8 +23,29 @@ const produtosCorrigidos = data.map(item=>{
 })
 
 
+//-------------Fim name ---------------------------------------
 
 
+
+
+
+//------------- PrecoStringToNumber----------------------------
+
+function corrigePrice(priceString){
+    const price = Number(priceString)
+    return price
+}
+
+const precoCorrigido = data
+   .map(item=> item.price)
+   .map(item=> corrigePrice(item))
+
+
+   const produtosCorrigidosPreco = data.map(item=>{
+    return item.price=precoCorrigido.shift()
+ })
+ 
+//-----------------Fim price------------------------------
 
 console.log(data)
 
