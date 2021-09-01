@@ -2,6 +2,7 @@
     
 const data = require('./broken-database.json')
 
+
 //-----------------Corrige name--------------------
 
 function corrigeFrase(frase){
@@ -47,12 +48,33 @@ const precoCorrigido = data
  
 //-----------------Fim price------------------------------
 
+
+
+
+
+
+
+// Corrigir quantidade 0 ---------------------------------
+
+function corrigeQtde(data){
+    const qtde = data
+    .map(item => item)
+    .map(item => {
+        if(item.hasOwnProperty('quantity') === false){
+           return item['quantity'] = 0
+        }else{
+            return item.quantity 
+        }
+
+    })
+
+    return qtde
+
+}
+
+corrigeQtde(data)
+
 console.log(data)
 
-// newArrayWords.map(item => {
-//     if(correctWords.includes(item)){
-//       return  console.log(item)
-//     } else{
-//         return item.toLocaleUpperCase
-//     }
-// })
+//fim quantidade 0 --------------------------------------------------
+
