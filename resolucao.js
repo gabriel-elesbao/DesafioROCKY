@@ -1,4 +1,4 @@
-
+const fs = require('fs')
     
 const data = require('./broken-database.json')
 
@@ -74,7 +74,12 @@ function corrigeQtde(data){
 
 corrigeQtde(data)
 
-console.log(data)
+const newDataBase = JSON.stringify(data) 
 
+fs.writeFile("./correct-database.json", newDataBase, (err)=>{
+    if(err){
+        console.log('err:', err)
+    }
+}) 
 //fim quantidade 0 --------------------------------------------------
 
