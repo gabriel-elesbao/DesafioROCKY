@@ -76,7 +76,7 @@ corrigeQtde(data)
 
 const newDataBase = JSON.stringify(data) 
 
-fs.writeFile("./correct-database.json", newDataBase, (err)=>{
+fs.writeFile("./saida.json", newDataBase, (err)=>{
     if(err){
         console.log('err:', err)
     }
