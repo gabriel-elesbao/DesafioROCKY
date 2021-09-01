@@ -1,3 +1,4 @@
+const { sign } = require('crypto')
 const fs = require('fs')
     
 const data = require('./broken-database.json')
@@ -83,3 +84,36 @@ fs.writeFile("./saida.json", newDataBase, (err)=>{
 }) 
 //fim quantidade 0 --------------------------------------------------
 
+
+
+const saidaJson  = require('./saida.json')
+
+
+
+const FiltraCategoriaAndId = (json)=>{
+  const result =  json.sort((a,b)=>{
+        if(a.category < b.category){return -1}
+        if(a.category> b.category){return 1}
+        if(a.id < b.id){return -1}
+        if(a.id > b.id){return 1}
+    
+        return 0
+    })
+
+    return result
+}
+
+// const teste = saidaJson.map(item => {
+//     const qtde = item.quantity
+//     // let result;
+
+//     if(item.category === item.category){
+//      return  = item
+//     }
+
+   
+    
+// })
+
+
+console.log(typeof teste)
