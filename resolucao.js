@@ -1,5 +1,6 @@
-const { sign } = require('crypto')
+
 const fs = require('fs')
+
     
 const data = require('./broken-database.json')
 
@@ -77,6 +78,8 @@ corrigeQtde(data)
 
 const newDataBase = JSON.stringify(data) 
 
+
+
 fs.writeFile("./saida.json", newDataBase, (err)=>{
     if(err){
         console.log('err:', err)
@@ -97,23 +100,36 @@ const FiltraCategoriaAndId = (json)=>{
         if(a.id < b.id){return -1}
         if(a.id > b.id){return 1}
     
-        return 0
+        return 0 
     })
 
     return result
 }
 
-// const teste = saidaJson.map(item => {
-//     const qtde = item.quantity
-//     // let result;
 
-//     if(item.category === item.category){
-//      return  = item
-//     }
+//--------------------------b
 
-   
+const filtraQtdePorCategoria = (json)=>{
+    const categories = []
     
-// })
+     json.map((product) => {
+        const index = categories.findIndex((category) => category.category === product.category)
+
+        
+        const object = {
+        category: product.category,
+        quantityTotal: product.quantity * product.price
+    }
+        
+        return index === -1
+            ? categories.push(object)
+            : categories[index].quantityTotal += product.quantity*product.price 
+    })
+
+    return categories
+    
+}
 
 
-console.log(typeof teste)
+console.log(filtraQtdePorCategoria(saidaJson))
+
