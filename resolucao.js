@@ -1,67 +1,51 @@
-
-const fs = require('fs')
-
-    
+const fs = require('fs') 
 const data = require('./broken-database.json')
 
 
-//-----------------Corrige name--------------------
 
-function corrigeFrase(frase){
-    const formatada = frase.replace(/[æ]/g,'a')
+function changeNames(nameProduct){
+
+    const productName =  nameProduct.map((product)=>{
+
+       const namesProduct =  product.name
+
+       const fixNames = namesProduct.replace(/[æ]/g,'a')
        .replace(/[¢]/g,'c')
        .replace(/[ø]/g,'o')
        .replace(/[ß]/g,'b')
 
-   return formatada
+
+
+       return fixNames
+    })
+
+    const jsonCorrectNames = data.map(getName=> getName.name = productName.shift())
+
+    return jsonCorrectNames
+  
 }
 
 
-const nameCorrigido = data
-   .map(item=> item.name)
-   .map(item=> corrigeFrase(item))
 
-const produtosCorrigidos = data.map(item=>{
-   return item.name=nameCorrigido.shift()
-})
+function stringToNumber(productsPriceString) {
 
+    const productPrice = productsPriceString.map((productsPrice)=>{
+        
+        const price = productsPrice.price
+        
+        return Number(price)
 
-//-------------Fim name ---------------------------------------
+    })
 
+    const jsonCorrectPrice = data.map(getPrice=> getPrice.price = productPrice.shift())
 
-
-
-
-//------------- PrecoStringToNumber----------------------------
-
-function corrigePrice(priceString){
-    const price = Number(priceString)
-    return price
+    return jsonCorrectPrice
 }
 
-const precoCorrigido = data
-   .map(item=> item.price)
-   .map(item=> corrigePrice(item))
-
-
-   const produtosCorrigidosPreco = data.map(item=>{
-    return item.price=precoCorrigido.shift()
- })
- 
-//-----------------Fim price------------------------------
-
-
-
-
-
-
-
-// Corrigir quantidade 0 ---------------------------------
 
 function corrigeQtde(data){
-    const qtde = data
-    .map(item => item)
-    .map(item => {
+    const qtde = data.map(item => {
+        
         if(item.hasOwnProperty('quantity') === false){
            return item['quantity'] = 0
         }else{
@@ -74,42 +58,60 @@ function corrigeQtde(data){
 
 }
 
+changeNames(data)
+stringToNumber(data)
 corrigeQtde(data)
 
-const newDataBase = JSON.stringify(data) 
 
 
+
+const newDataBase = JSON.stringify(data)
 
 fs.writeFile("./saida.json", newDataBase, (err)=>{
     if(err){
         console.log('err:', err)
     }
 }) 
-//fim quantidade 0 --------------------------------------------------
+
+const path = './saida.json'
+
+fs.exists(path,(exists)=>{
+    if(exists){
+        const saidaJson = require('./saida.json')
+        
+        console.log('---'.repeat(30))
+
+        console.log("Filtro por categoria e Id\n")
+        console.log(FilterCategoryAndId(saidaJson))
+
+        console.log('---'.repeat(30))
+        
+        console.log("Quantidade por categoria\n")
+        console.log(FilterQuantityByCategory(saidaJson))
+        
+    }
+})
 
 
 
-const saidaJson  = require('./saida.json')
+const FilterCategoryAndId = (json)=>{
 
-
-
-const FiltraCategoriaAndId = (json)=>{
-  const result =  json.sort((a,b)=>{
+    const sortByCategoryAndId = (a,b)=>{
         if(a.category < b.category){return -1}
         if(a.category> b.category){return 1}
         if(a.id < b.id){return -1}
         if(a.id > b.id){return 1}
     
-        return 0 
-    })
+        return 0
+    }
 
-    return result
-}
+    const result =  json.sort(sortByCategoryAndId)
+  
+      return result
+  }
 
 
-//--------------------------b
-
-const filtraQtdePorCategoria = (json)=>{
+  const FilterQuantityByCategory = (json)=>{
     const categories = []
     
      json.map((product) => {
@@ -117,9 +119,9 @@ const filtraQtdePorCategoria = (json)=>{
 
         
         const object = {
-        category: product.category,
-        quantityTotal: product.quantity * product.price
-    }
+            category: product.category,
+            quantityTotal: product.quantity * product.price
+        }
         
         return index === -1
             ? categories.push(object)
@@ -129,7 +131,4 @@ const filtraQtdePorCategoria = (json)=>{
     return categories
     
 }
-
-
-console.log(filtraQtdePorCategoria(saidaJson))
 
