@@ -1,4 +1,4 @@
-const fs = require('fs') 
+const fs = require('fs/promises')
 const data = require('./broken-database.json')
 
 
@@ -67,30 +67,32 @@ corrigeQtde(data)
 
 const newDataBase = JSON.stringify(data)
 
-fs.writeFile("./saida.json", newDataBase, (err)=>{
-    if(err){
-        console.log('err:', err)
-    }
-}) 
 
-const path = './saida.json'
 
-fs.exists(path,(exists)=>{
-    if(exists){
-        const saidaJson = require('./saida.json')
-        
-        console.log('---'.repeat(30))
+function  promise() {
+    return fs.writeFile('./saida.json', newDataBase)
+}
 
-        console.log("Filtro por categoria e Id\n")
-        console.log(FilterCategoryAndId(saidaJson))
+ 
+async function  validate() {
+    await promise()
 
-        console.log('---'.repeat(30))
-        
-        console.log("Quantidade por categoria\n")
-        console.log(FilterQuantityByCategory(saidaJson))
-        
-    }
-})
+    const saidaJson = require('./saida.json')
+    
+    console.log('---'.repeat(30))
+    
+    console.log("Filtro por categoria e Id\n")
+    console.log(FilterCategoryAndId(saidaJson))
+    
+    console.log('---'.repeat(30))
+    
+    console.log("Quantidade por categoria\n")
+    console.log(FilterQuantityByCategory(saidaJson))
+}   
+
+validate()
+
+    
 
 
 
