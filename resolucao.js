@@ -2,7 +2,6 @@ const fs = require('fs/promises')
 const data = require('./broken-database.json')
 
 
-
 function changeNames(nameProduct){
 
     const productName =  nameProduct.map((product)=>{
@@ -66,8 +65,6 @@ corrigeQtde(data)
 
 
 const newDataBase = JSON.stringify(data)
-
-
 
 function  promise() {
     return fs.writeFile('./saida.json', newDataBase)
